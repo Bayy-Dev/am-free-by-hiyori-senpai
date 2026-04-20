@@ -141,8 +141,8 @@ async function hasUserClaimed() {
   const deviceId = getDeviceId();
   const user     = getLoggedInUser();
 
-  if (sessions.find(s => s.sessionId === deviceId)) return true;
   if (user && sessions.find(s => s.userId === user.id)) return true;
+  if (sessions.find(s => s.sessionId === deviceId)) return true;
   return false;
 }
 
@@ -152,10 +152,10 @@ async function getUserClaim() {
   const deviceId  = getDeviceId();
   const user      = getLoggedInUser();
 
-  let mySession = sessions.find(s => s.sessionId === deviceId);
-  if (!mySession && user) {
-    mySession = sessions.find(s => s.userId === user.id);
-  }
+  let mySession = user ? sessions.find(s => s.userId === user.id) : null;
+  if (!mySession) {
+    mySession = sessions.find(s => s.sessionId === deviceId);
+}
   if (!mySession) return null;
 
   const accounts = await getAccounts();
