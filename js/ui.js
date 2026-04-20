@@ -232,8 +232,8 @@ async function renderDashboard() {
     }
   }
 
-  const isClaimed = await hasUserClaimed();
-
+  const isClaimed = user && user.role !== 'admin' && await hasUserClaimed();
+  
   if (isClaimed) {
     heroEl.innerHTML = buildClaimedBannerHTML();
     return;
